@@ -12,6 +12,7 @@
                             <div class="row form-group">
                                 @include('form.input', ["value" => "aew", "size" => "col-7","id" => "nome", "label" => "Nome do Cliente:","class" => "col-form-label form-control", "attributes" => ["placeholder" => "Nome"]])
                                 @include('form.input', ["value" => "aew", "size" => "col-5","id" => "cpfcnpj", "label" => "CPF/CNPJ:","class" => "col-form-label form-control", "attributes" => ["placeholder" => "CPF/CNPJ"]])
+                                @include('form.input', ["value" => "aew", "size" => "col-5","id" => "telefone", "label" => "Telefones:","class" => "col-form-label form-control", "attributes" => ["placeholder" => "Tel/Cel"]])
                             </div>
                             <div class="endereco1">
                                 <div class="row form-group mt-4">
@@ -48,37 +49,14 @@
                             </div>   
                             
                             {{ Form::close() }}
-                            <h6 class="mt-4">Serviços:</h6>
-                            <div class="list-group list-group-flush">
-                                @for ($i = 0; $i < 5; $i++)      
-                                <div class="row">
-                                    <div class="col-lg-10 col-md-8 col-sm-8 col-8 list-group-item text-truncate ">{{ $i + 1 }} - Rodrigo, Avenida Casper Libero, 235</div>
-                                    <div class="col-lg-2 col-md-4 col-sm-4 col-4 btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
-                                        <button type="button" class="btn btn-outline-light text-primary">Editar <i class="fa-pen fa-solid"></i></button>
-                                    </div>
-                                </div> 
-                                @endfor
-                                <div class="row">
-                                    <div class="col-lg-10 col-md-8 col-sm-8 col-8 text-truncate btn btn-outline-primary">Adicionar Serviço</div>
-                                </div>
-                            </div> 
-                            <div class="row mt-4">
-                                <h6 class="col-8">Materiais:</h6>
-                            </div>
-                            <div class="list-group list-group-flush">
-                                @for ($i = 0; $i < 3; $i++)      
-                                <div class="row">
-                                    <div class="col-lg-10 col-md-8 col-sm-8 col-8 list-group-item text-truncate ">{{ $i + 1 }} - Rodrigo, Avenida Casper Libero, 235</div>
-                                    <div class="col-lg-2 col-md-4 col-sm-4 col-4 btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
-                                        <button type="button" class="btn btn-outline-light text-primary">Editar <i class="fa-pen fa-solid"></i></button>
-                                    </div>
-                                </div> 
-                                @endfor
-                                <div class="row">
-                                    <div class="col-lg-10 col-md-8 col-sm-8 col-8 text-truncate btn btn-outline-primary">Adicionar Material</div>
-                                </div>
-                            </div>                            
-                            <div class="card-header mt-4">Valor total estimado: R$ 360,00</div>
+                            
+                            {{-- INICIO ROW DE SERVIÇOS E MATERIAIS --}}              
+                            <hr>              
+                                @include('empresas.servicos.row-servicos', ['edit' => true])                            
+                            <hr>
+                                @include('empresas.servicos.row-materiais', ['edit' => true])                          
+                            <hr>
+                            {{-- FIM ROW DE SERVIÇOS E MATERIAIS --}}
 
                             <div class="mt-4 text-center" role="group" aria-label="Grupo de Botoes">
                                 <a href="{{ route('empresas.servico.edit', [1,2]) }}" type="button" class="btn btn-outline-primary">Editar Informações</a>
