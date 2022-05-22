@@ -1,0 +1,1 @@
+<h6 class="alert alert-success text-center">Valor total do Orçamento: R$ 3.650,00</h6>
