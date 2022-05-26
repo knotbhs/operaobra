@@ -1,5 +1,6 @@
 
 <h6 class="mt-2 px-2 text-primary">Informações pessoais:</h6>
+
 <div class="px-3">
     <h5 class="card-title px-2 mt-3" style="max-width: 18em;">
         Rodrigo dos Santos

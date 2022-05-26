@@ -81,9 +81,9 @@
     </div>
 </body>
     <!-- Scripts -->
-    @yield('content-js')
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('plugins/fontawesome/js/all.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}" ></script>
     <script src="{{ asset('plugins/jquery/jquery-3.6.0.min.js') }}" ></script>
+    @yield('content-js')
 </html>

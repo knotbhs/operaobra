@@ -22,7 +22,7 @@
                                 @include('empresas.servicos.row-valor-total')  
                             {{-- FIM DO VALOR TOTAL DO ORÇAMENTO --}}
                             {{-- INICIO DO MENU --}}
-                                @include('empresas.servicos.menu')
+                                @include('empresas.servicos.menu',["edit" => true])
                             {{-- FINAL DO MENU --}}
                         </div>
                     </div>
