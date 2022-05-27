@@ -48,11 +48,23 @@ class EmpresasController extends Controller
      */
     public function index()
     {
+        $empresas = $this->repository->all();
         $result = [];
+        $result['empresas'] = [];
+        $i = 0;
+        foreach($empresas as $empresa)
+        {
+            $result['empresas'][$i]["empresa-nome"] = $empresa->name;
+            $result['empresas'][$i]["empresa-descricao-breve"] = $empresa->obs;
+            $result['empresas'][$i]["empresa-notificacoes-count"] = 14;
+            $result['empresas'][$i]["empresa-id"] = $empresa->id;
+            $i++;
+        }
         $empresas = [["empresa-nome" => "Calhas", "empresa-descricao-breve"=>"Calhas e Telhados", "empresa-notificacoes-count" => 50, "empresa-id" => 1], 
                     ["empresa-nome" => "Pinturas", "empresa-descricao-breve"=>"Pinturas em Geral", "empresa-notificacoes-count" => 22, "empresa-id" => 2], 
                     ["empresa-nome" => "Serralheria", "empresa-descricao-breve"=>"Ferragens em Geral", "empresa-notificacoes-count" => 15, "empresa-id" => 3]];
-        $result['empresas'] = $empresas;
+                    
+          
         //dd($empresas);
         return view('empresas.home-empresa', $result);
     }

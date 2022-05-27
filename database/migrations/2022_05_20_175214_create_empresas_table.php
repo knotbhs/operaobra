@@ -17,7 +17,12 @@ class CreateEmpresasTable extends Migration
 	{
 		Schema::create('empresas', function(Blueprint $table) {
             $table->increments('id');
-
+			$table->string('name');
+			$table->string('cnpj', 14)->nullable();
+			$table->string('email')->nullable();
+			$table->string('telefone')->nullable();
+			$table->json('endereco')->nullable();
+			$table->text('obs')->nullable();
             $table->timestamps();
 		});
 	}
