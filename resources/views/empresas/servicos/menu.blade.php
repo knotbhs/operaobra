@@ -2,7 +2,7 @@
     
     <div class="btn-group col-12 pt-2 pt-lg-0" role="group">        
         @if(isset($edit) && $edit)
-            <a href="{{ route('empresas.servico.edit', [1,2]) }}" class="btn btn-outline-primary col-lg-4 col-md-6 col-sm-6 col-6">Editar Informações</a>            
+            <a href="{{ route('empresas.servico.edit', [$empresa['id'], $orcamento['id']]) }}" class="btn btn-outline-primary col-lg-4 col-md-6 col-sm-6 col-6">Editar Informações</a>            
             <a href="#" type="button" class="btn btn-outline-primary col-lg-4 col-md-6 col-sm-6 col-6">Finalizar Serviço</a>
             
             <div class="btn-group col-lg-4 col-md-12 col-sm-12 col-12 pt-2 pt-lg-0" role="group">
@@ -22,8 +22,8 @@
                 </ul>
             </div>
         @else
-            <a href="{{ route('empresas.servico', [1,2]) }}" class="btn btn-outline-danger col-lg-4 col-md-6 col-sm-6 col-6">Cancelar Alterações</a>            
-            <a href="{{ route('empresas.servico', [1,2]) }}" class="btn btn-outline-primary col-lg-4 col-md-6 col-sm-6 col-6">Salvar Alterações</a>            
+            <a href="{{ route('empresas.servico', [$empresa['id'], $orcamento['id']]) }}" class="btn btn-outline-danger col-lg-4 col-md-6 col-sm-6 col-6">Cancelar Alterações</a>            
+            <a href="{{ route('empresas.servico', [$empresa['id'], $orcamento['id']]) }}" class="btn btn-outline-primary col-lg-4 col-md-6 col-sm-6 col-6">Salvar Alterações</a>            
         @endif        
     </div>    
 </div>
