@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><a href="{{ route('empresas') }}">Painel</a> > <a href="{{ route('empresas.painel', [1]) }}">Calhas Scarpari</a> > <a href="{{ route('empresas.servico', [1,2]) }}">Rodrigo dos Santos</a> > <a href="{{ route('empresas.servico.edit', [1,2]) }}" class="text-dark">Editando Serviço</a></div>
+                <div class="card-header"><a href="{{ route('empresas') }}">Painel</a> > <a href="{{ route('empresas.painel', [$empresa['id']]) }}">{{ $empresa['name'] }}</a> > <a href="{{ route('empresas.servico', [$empresa['id'], $orcamento['id']]) }}">{{ $cliente->name }}</a> > <a href="{{ route('empresas.servico.edit', [$empresa['id'], $orcamento['id']]) }}" class="text-dark">Editando Serviço</a></div>
                 <div class="card-body">                    
                     <div class="card border-primary">
                         <div class="card-body">
@@ -95,7 +95,7 @@
                 let name = $(this).attr("special");
                 if(name == 'valor')
                 {
-                    $("input#valor").val(text);
+                    $("input#valor").val(text.toString().replace("R$ ", ""));
                 }else if(name == 'name')
                 {
                     $("textarea#servico").val(text);
