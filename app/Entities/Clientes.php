@@ -28,5 +28,25 @@ class Clientes extends Model implements Transformable
         "endereco",
         "obs"
     ];
+    public function getEnderecoAttribute()
+    {
+        $endereco = $this->attributes['endereco'];
+        if($endereco)
+        {
+            $json = json_decode($endereco,true);
+            if($json)
+            {
+                $rua = isset($json['rua']) ? $json['rua'] : "";
+                $numero = isset($json['numero']) ? ", ".$json['numero'] : "";
+                $complemento = isset($json['complemento']) ? " - ".$json['complemento'] : "";
+                $bairro = isset($json['bairro']) ? " - ".$json['bairro'] : "";
+                $cidade = isset($json['cidade']) ? " - ".$json['cidade'] : "";
+                $estado = isset($json['estado']) ? "/".$json['estado'] : "";
+                $cep = isset($json['cep']) ? " - ".$json['cep'] : "";
+                $endereco = $rua.$numero.$complemento.$bairro.$cidade.$estado.$cep;
+            }
+        }
+        return $endereco;
+    }
 
 }

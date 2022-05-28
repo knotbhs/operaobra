@@ -99,22 +99,28 @@ class EmpresasController extends Controller
                 for ($i=0; $i < count($orcamentos); $i++) 
                 {       
                     
-                    $endereco_obra = json_decode($orcamentos[$i]->endereco_obra, true);
+                    $endereco_obra = $orcamentos[$i]->endereco_obra;
                     $cliente = $this->cliente->find($orcamentos[$i]->cliente_id);     
                     $result["orcamentos"][$i]["id"] = $orcamentos[$i]->id;
                     $result["orcamentos"][$i]["valor"] = $orcamentos[$i]->valor;
                     $result["orcamentos"][$i]["data_inicio"] = $orcamentos[$i]->data_inicio;
                     $result["orcamentos"][$i]["etapa"] = $this->getEtapa($orcamentos[$i]->etapa);
-                    $result["orcamentos"][$i]["text"] = $endereco_obra["rua"].", ".$endereco_obra["numero"]." - ".$cliente['name'];
+                    $result["orcamentos"][$i]["text"] = $cliente['name']." - ".$endereco_obra;
                 }     
             }
         }
         return view('empresas.home-painel', $result);
     }
-    public function servico($id)
+    public function orcamento($empresa_id, $orcamento_id)
     {
+        $orcamento = $this->orcamentos->find($orcamento_id);
         $result = [];
-        $result["empresa_id"] = $id;
+        $result["empresa"] = $this->repository->find($orcamento['empresa_id']);
+        $result["cliente"] = $this->cliente->find($orcamento['cliente_id']);
+        $result["orcamento"] = $this->orcamentos->find($orcamento_id);
+        $result["orcamento"]["etapa"] = $this->getEtapaNoFormat($result["orcamento"]["etapa"]);
+
+        //dd($result);
         return view('empresas.home-servico', $result);
     }
 
@@ -280,6 +286,26 @@ class EmpresasController extends Controller
             
             default:
                 $etapa = '<span class="badge bg-warning">Orçamento</span>';
+                break;
+        }
+
+        return $etapa;
+    }
+    public function getEtapaNoFormat($etapa)
+    {
+        switch ($etapa) {
+            case 1:
+                $etapa = 'Orçamento';
+                break;
+                case 2:                
+                    $etapa = 'Andamento';
+                    break;
+                case 3:                
+                    $etapa = 'Finalizado';
+                    break;
+            
+            default:
+                $etapa = 'Orçamento';
                 break;
         }
 

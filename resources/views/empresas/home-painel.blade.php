@@ -13,7 +13,7 @@
                             <ul class="list-group list-group-flush">         
                                 @isset($orcamentos)                      
                                     @for ($i = 0; $i < count($orcamentos); $i++)                                    
-                                        <a href="{{ route('empresas.servico', [1, 2]) }}" class="list-group-item text-truncate ">{{ $orcamentos[$i]['id'] }} - {{ $orcamentos[$i]['text'] }} {!! $orcamentos[$i]['etapa'] !!}</a>
+                                        <a href="{{ route('empresas.servico', [$empresa_id, $orcamentos[$i]['id']]) }}" class="list-group-item col-12"><div class="row"><span class="col-9 col-lg-10 col-md-9 text-truncate">{{ $orcamentos[$i]['id'] }} - {{ $orcamentos[$i]['text'] }}</span><span class="col-3 col-lg-2 col-md-3">{!! $orcamentos[$i]['etapa'] !!}</span></div></a>
                                     @endfor                                    
                                 @endisset 
                             </ul>                            
