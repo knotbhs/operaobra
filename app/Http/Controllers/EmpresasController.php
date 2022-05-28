@@ -11,6 +11,8 @@ use App\Http\Requests\EmpresaCreateRequest;
 use App\Http\Requests\EmpresaUpdateRequest;
 use App\Repositories\EmpresaRepository;
 use App\Validators\EmpresaValidator;
+use App\Repositories\OrcamentosRepository;
+use App\Repositories\ClientesRepository;
 
 /**
  * Class EmpresasController.
@@ -28,17 +30,29 @@ class EmpresasController extends Controller
      * @var EmpresaValidator
      */
     protected $validator;
+    /**
+     * @var EmpresaValidator
+     */
+    protected $orcamentos;
+    /**
+     * @var EmpresaValidator
+     */
+    protected $cliente;
 
     /**
      * EmpresasController constructor.
      *
      * @param EmpresaRepository $repository
      * @param EmpresaValidator $validator
+     * @param EmpresaValidator $orcamentos
+     * @param EmpresaValidator $cliente
      */
-    public function __construct(EmpresaRepository $repository, EmpresaValidator $validator)
+    public function __construct(EmpresaRepository $repository, EmpresaValidator $validator, OrcamentosRepository $orcamentos, ClientesRepository $cliente)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->orcamentos  = $orcamentos;
+        $this->cliente  = $cliente;
     }
 
     /**
@@ -70,9 +84,31 @@ class EmpresasController extends Controller
     }
 
     public function painel($id)
-    {
-        $result = [];
-        $result["empresa_id"] = $id;
+    {        
+        $empresa = $this->repository->find($id);
+        if($empresa)
+        {
+            $result = [];
+            $result["empresa_id"] = $id;
+            $result["name_empresa"] = $empresa->name;
+
+            $orcamentos = $this->orcamentos->findWhere(["empresa_id" => $id]);
+            if(count($orcamentos) > 0)
+            {
+                $result["orcamentos"] = [];
+                for ($i=0; $i < count($orcamentos); $i++) 
+                {       
+                    
+                    $endereco_obra = json_decode($orcamentos[$i]->endereco_obra, true);
+                    $cliente = $this->cliente->find($orcamentos[$i]->cliente_id);     
+                    $result["orcamentos"][$i]["id"] = $orcamentos[$i]->id;
+                    $result["orcamentos"][$i]["valor"] = $orcamentos[$i]->valor;
+                    $result["orcamentos"][$i]["data_inicio"] = $orcamentos[$i]->data_inicio;
+                    $result["orcamentos"][$i]["etapa"] = $this->getEtapa($orcamentos[$i]->etapa);
+                    $result["orcamentos"][$i]["text"] = $endereco_obra["rua"].", ".$endereco_obra["numero"]." - ".$cliente['name'];
+                }     
+            }
+        }
         return view('empresas.home-painel', $result);
     }
     public function servico($id)
@@ -228,5 +264,25 @@ class EmpresasController extends Controller
         }
 
         return redirect()->back()->with('message', 'Empresa deleted.');
+    }
+    public function getEtapa($etapa)
+    {
+        switch ($etapa) {
+            case 1:
+                $etapa = '<span class="badge bg-warning">Orçamento</span>';
+                break;
+                case 2:                
+                    $etapa = '<span class="badge bg-success">Andamento</span>';
+                    break;
+                case 3:                
+                    $etapa = '<span class="badge bg-primary">Finalizado</span>';
+                    break;
+            
+            default:
+                $etapa = '<span class="badge bg-warning">Orçamento</span>';
+                break;
+        }
+
+        return $etapa;
     }
 }
