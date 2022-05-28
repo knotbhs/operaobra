@@ -23,5 +23,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/empresas', [App\Http\Controllers\EmpresasController::class, 'index'])->name('empresas');
 Route::get('/empresas/painel/{id}', [App\Http\Controllers\EmpresasController::class, 'painel'])->name('empresas.painel');
-Route::get('/empresas/painel/{id}/servico/{idserv}', [App\Http\Controllers\EmpresasController::class, 'servico'])->name('empresas.servico');
+Route::get('/empresas/painel/{id}/orcamento/{idserv}', [App\Http\Controllers\EmpresasController::class, 'orcamento'])->name('empresas.servico');
 Route::get('/empresas/painel/{id}/servico/{idserv}/editar-informacoes', [App\Http\Controllers\EmpresasController::class, 'editar'])->name('empresas.servico.edit');
