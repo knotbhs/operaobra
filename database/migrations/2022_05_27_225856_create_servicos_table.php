@@ -4,9 +4,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateEmpresasTable.
+ * Class CreateServicosTable.
  */
-class CreateEmpresasTable extends Migration
+class CreateServicosTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -15,15 +15,14 @@ class CreateEmpresasTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('empresas', function(Blueprint $table) {
+		Schema::create('servicos', function(Blueprint $table) {
             $table->increments('id');
+			$table->integer('orcamento_id')->unsigned();
 			$table->string('name');
-			$table->string('cnpj', 14)->nullable();
-			$table->string('email')->nullable();
-			$table->string('telefone')->nullable();
-			$table->json('endereco')->nullable();
-			$table->text('obs')->nullable();
+			$table->float('valor')->nullable();
+			$table->text('descricao')->nullable();
             $table->timestamps();
+			$table->foreign('orcamento_id')->references('id')->on('orcamentos');
 		});
 	}
 
@@ -34,6 +33,6 @@ class CreateEmpresasTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('empresas');
+		Schema::drop('servicos');
 	}
 }
