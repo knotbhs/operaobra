@@ -14,6 +14,7 @@ use App\Validators\EmpresaValidator;
 use App\Repositories\OrcamentosRepository;
 use App\Repositories\ClientesRepository;
 use App\Repositories\ServicosRepository;
+use App\Repositories\MateriaisRepository;
 
 /**
  * Class EmpresasController.
@@ -32,17 +33,21 @@ class EmpresasController extends Controller
      */
     protected $validator;
     /**
-     * @var EmpresaValidator
+     * @var OrcamentosValidator
      */
     protected $orcamentos;
     /**
-     * @var EmpresaValidator
+     * @var ClientesValidator
      */
     protected $cliente;
     /**
-     * @var EmpresaValidator
+     * @var ServicosValidator
      */
     protected $servicos;
+    /**
+     * @var MateriaisValidator
+     */
+    protected $materiais;
 
     /**
      * EmpresasController constructor.
@@ -52,14 +57,16 @@ class EmpresasController extends Controller
      * @param OrcamentosValidator $orcamentos
      * @param ClientesValidator $cliente
      * @param ServicosValidator $servicos
+     * @param MateriaisValidator $materiais
      */
-    public function __construct(EmpresaRepository $repository, EmpresaValidator $validator, OrcamentosRepository $orcamentos, ClientesRepository $cliente, ServicosRepository $servicos)
+    public function __construct(EmpresaRepository $repository, EmpresaValidator $validator, OrcamentosRepository $orcamentos, ClientesRepository $cliente, ServicosRepository $servicos, MateriaisRepository $materiais)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
         $this->orcamentos  = $orcamentos;
         $this->cliente  = $cliente;
         $this->servicos  = $servicos;
+        $this->materiais  = $materiais;
     }
 
     /**
@@ -112,7 +119,7 @@ class EmpresasController extends Controller
                     $result["orcamentos"][$i]["valor"] = $orcamentos[$i]->valor;
                     $result["orcamentos"][$i]["data_inicio"] = $orcamentos[$i]->data_inicio;
                     $result["orcamentos"][$i]["etapa"] = $this->getEtapa($orcamentos[$i]->etapa);
-                    $result["orcamentos"][$i]["text"] = $cliente['name']." - ".$endereco_obra;
+                    $result["orcamentos"][$i]["text"] = $cliente['name']." - ".$endereco_obra['rua'];
                 }     
             }
         }
@@ -122,19 +129,29 @@ class EmpresasController extends Controller
     {
         $orcamento = $this->orcamentos->find($orcamento_id);
         $servicos = $this->servicos->findWhere(["orcamento_id" => $orcamento_id]);
+        $materiais = $this->materiais->findWhere(["orcamento_id" => $orcamento_id]);
         $result = [];
         $result["empresa"] = $this->repository->find($orcamento['empresa_id']);
         $result["cliente"] = $this->cliente->find($orcamento['cliente_id']);
         $result["orcamento"] = $this->orcamentos->find($orcamento_id);
         $result["orcamento"]["servicos"] = $servicos;
+        $result["orcamento"]["materiais"] = $materiais;
         $result["orcamento"]["etapa"] = $this->getEtapaNoFormat($result["orcamento"]["etapa"]);
         $result["valor_servicos"] = 0;
+        $result["valor_materiais"] = 0;
         //Somando valores dos serviços
         for ($i=0; $i < count($servicos); $i++) 
         { 
             $result["valor_servicos"] += $servicos[$i]["valor"];
         }
+        for ($i=0; $i < count($materiais); $i++) 
+        { 
+            $result["valor_materiais"] += $materiais[$i]["valor"];
+        }
+        $result["valor_total"] = number_format($result["valor_servicos"] + $result["valor_materiais"],2,",",".");
+
         $result["valor_servicos"] = number_format($result["valor_servicos"],2,",",".");
+        $result["valor_materiais"] = number_format($result["valor_materiais"],2,",",".");        
         
         return view('empresas.home-servico', $result);
     }
@@ -145,19 +162,31 @@ class EmpresasController extends Controller
         $result["empresa_id"] = $id;
         $orcamento = $this->orcamentos->find($orcamento_id);
         $servicos = $this->servicos->findWhere(["orcamento_id" => $orcamento_id]);
+        $materiais = $this->materiais->findWhere(["orcamento_id" => $orcamento_id]);
         $result = [];
         $result["empresa"] = $this->repository->find($orcamento['empresa_id']);
         $result["cliente"] = $this->cliente->find($orcamento['cliente_id']);
         $result["orcamento"] = $this->orcamentos->find($orcamento_id);
         $result["orcamento"]["servicos"] = $servicos;
+        $result["orcamento"]["materiais"] = $materiais;
         $result["orcamento"]["etapa"] = $this->getEtapaNoFormat($result["orcamento"]["etapa"]);
         $result["valor_servicos"] = 0;
+        $result["valor_materiais"] = 0;
         //Somando valores dos serviços
         for ($i=0; $i < count($servicos); $i++) 
         { 
             $result["valor_servicos"] += $servicos[$i]["valor"];
         }
+        for ($i=0; $i < count($materiais); $i++) 
+        { 
+            $result["valor_materiais"] += $materiais[$i]["valor"];
+        }
+        $result["valor_total"] = number_format($result["valor_servicos"] + $result["valor_materiais"],2,",",".");
+
         $result["valor_servicos"] = number_format($result["valor_servicos"],2,",",".");
+        $result["valor_materiais"] = number_format($result["valor_materiais"],2,",",".");
+
+
         return view('empresas.edit-servico', $result);
     }
 
