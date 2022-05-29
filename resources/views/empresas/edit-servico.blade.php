@@ -24,6 +24,9 @@
                                 @include('empresas.servicos.row-materiais', ['edit' => true])                          
                             <hr>
                             {{-- FIM ROW DE SERVIÇOS E MATERIAIS --}}
+                            {{-- INCIO DO VALOR TOTAL DO ORÇAMENTO --}}                            
+                                @include('empresas.servicos.row-valor-total', ['edit' => true])  
+                                {{-- FIM DO VALOR TOTAL DO ORÇAMENTO --}}
                             {{-- INICIO DO MENU --}}
                                 @include('empresas.servicos.menu',["edit" => false])
                                 {{-- FINAL DO MENU --}}

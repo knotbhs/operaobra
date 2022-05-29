@@ -19,6 +19,9 @@
                     <li>
                         <a class="dropdown-item" href="#">Cobrança</a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Contrato</a>
+                    </li>
                 </ul>
             </div>
         @else
